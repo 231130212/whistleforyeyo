@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { api } from '../api.js';
 import WhisperCard from '../components/WhisperCard.jsx';
-import { LIMITS } from '../config.js';
+import { LIMITS, OWNER_NAME } from '../config.js';
 
 const TABS = [
   { key: 'all', label: 'Semua', stat: 'total' },
@@ -38,6 +38,47 @@ function ReplyEditor({ initial, onSave, onCancel }) {
           Batal
         </button>
       </div>
+    </div>
+  );
+}
+
+function ShareLink() {
+  const [copied, setCopied] = useState(false);
+  const url = window.location.origin;
+
+  async function share() {
+    // Di HP: buka menu share bawaan (WhatsApp, IG, dll).
+    if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
+      try {
+        await navigator.share({
+          title: 'whistleforyeyo',
+          text: `Psst… bisikkan sesuatu ke ${OWNER_NAME}, tanpa nama 🤫`,
+          url,
+        });
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return; // pengguna menutup menu share
+      }
+    }
+    // Di laptop: salin ke clipboard.
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.prompt('Salin link ini:', url);
+    }
+  }
+
+  return (
+    <div className="card share">
+      <div className="share-text">
+        <strong>Link bisikanmu</strong>
+        <code>{url}</code>
+      </div>
+      <button type="button" className="btn btn-primary btn-sm" onClick={share}>
+        {copied ? 'Tersalin ✓' : 'Bagikan link'}
+      </button>
     </div>
   );
 }
@@ -98,7 +139,7 @@ export default function Admin() {
     <section>
       <div className="admin-head">
         <div>
-          <p className="eyebrow">telinga yeyo</p>
+          <p className="eyebrow">telinga {OWNER_NAME.toLowerCase()}</p>
           <h1>Kotak bisikan</h1>
         </div>
         <div className="row">
@@ -115,6 +156,8 @@ export default function Admin() {
           </button>
         </div>
       </div>
+
+      <ShareLink />
 
       <div className="tabs" role="tablist">
         {TABS.map((t) => (

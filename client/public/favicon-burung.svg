@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#d9480f"/>
+  <rect width="64" height="64" rx="16" fill="#2f63b0"/>
   <!-- badan -->
   <path d="M10 58c0-10 6-17 15-19l9 1c4 3 6 9 6 18z" fill="#fff"/>
   <!-- kepala -->
@@ -10,7 +10,7 @@
   <path d="M37 26l12-2-10 6z" fill="#ffd8a8"/>
   <path d="M38 32l10 5-11-1z" fill="#ffd8a8"/>
   <!-- mata -->
-  <circle cx="30" cy="28" r="2.4" fill="#2a1530"/>
+  <circle cx="30" cy="28" r="2.4" fill="#17223a"/>
   <!-- kicauan -->
   <path d="M51 20q4 3 4 8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
   <path d="M53 34q3 2 3 5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".7"/>

@@ -1,34 +1,34 @@
 /* ───────── Tokens ───────── */
 :root {
-  /* Retro sunset — terang: senja peach → magenta → lilac */
-  --bg: #ffe9d6;
-  --bg-gradient: linear-gradient(180deg, #fff1e2 0%, #ffd2b0 28%, #ffa9b8 58%, #d7a6ec 82%, #b28ce8 100%);
-  --sun-top: #ffb347;
-  --sun-bottom: #ff4f8b;
-  --sun-opacity: 0.55;
-  --grid-line: rgb(122 44 191 / 0.35);
-  --cloud-fill: #fffaf3;
-  --cloud-line: #e98f6a;
+  /* Blue hour — terang: langit pagi yang pucat dan tenang */
+  --bg: #eef3fa;
+  --bg-gradient: linear-gradient(180deg, #f4f7fc 0%, #e6edf7 35%, #d8e3f3 65%, #cbd8ef 85%, #c2cfeb 100%);
+  --sun-top: #ffffff;
+  --sun-bottom: #d6e1f2;
+  --sun-opacity: 0.85;
+  --grid-line: rgb(47 99 176 / 0.14);
+  --cloud-fill: #ffffff;
+  --cloud-line: #a8bcdc;
 
-  --surface: rgb(255 250 245 / 0.86);
-  --surface-2: rgb(250 236 232 / 0.9);
-  --field: #fffaf6;
-  --ink: #2a1530;
-  --muted: #74566f;
-  --line: rgb(122 44 191 / 0.18);
-  --accent: #e8470f;
-  --accent-hover: #c73a0a;
+  --surface: rgb(255 255 255 / 0.84);
+  --surface-2: rgb(238 243 250 / 0.92);
+  --field: #fbfcfe;
+  --ink: #17223a;
+  --muted: #5a6886;
+  --line: rgb(47 99 176 / 0.15);
+  --accent: #2f63b0;
+  --accent-hover: #244f8f;
   --accent-ink: #ffffff;
-  --accent-soft: #ffe2d3;
-  --accent-2: #8a2be2;
-  --title-gradient: linear-gradient(90deg, #f0540f, #e0306f 50%, #8a2be2);
-  --danger: #c92a2a;
-  --danger-soft: #fdeaea;
-  --focus: rgb(232 71 15 / 0.4);
+  --accent-soft: #e4ecf8;
+  --accent-2: #6a7cc0;
+  --title-gradient: linear-gradient(90deg, #2f63b0, #5f86d4 55%, #c98c74);
+  --danger: #c0392b;
+  --danger-soft: #fbeaea;
+  --focus: rgb(47 99 176 / 0.35);
 
   --radius: 18px;
   --radius-sm: 10px;
-  --shadow: 0 1px 2px rgb(60 20 70 / 0.06), 0 12px 32px rgb(90 30 110 / 0.12);
+  --shadow: 0 1px 2px rgb(23 34 58 / 0.05), 0 12px 32px rgb(40 70 120 / 0.1);
 
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -38,32 +38,32 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Retro sunset — gelap: malam synthwave, matahari oranye di cakrawala */
-    --bg: #1a0b2e;
-    --bg-gradient: linear-gradient(180deg, #12071f 0%, #2a0e48 35%, #5c1a5e 65%, #a3305a 85%, #e8642c 100%);
-    --sun-top: #ffd36e;
-    --sun-bottom: #ff3d7f;
-    --sun-opacity: 0.85;
-    --grid-line: rgb(255 92 168 / 0.45);
-    --cloud-fill: #3a1d58;
-    --cloud-line: #ff8fbf;
+    /* Blue hour — gelap: malam yang tenang, bulan pucat di cakrawala */
+    --bg: #0c1222;
+    --bg-gradient: linear-gradient(180deg, #0a0f1d 0%, #0f1830 35%, #152443 65%, #1c3052 85%, #243b62 100%);
+    --sun-top: #eef3ff;
+    --sun-bottom: #9fb4da;
+    --sun-opacity: 0.55;
+    --grid-line: rgb(143 180 255 / 0.16);
+    --cloud-fill: #182747;
+    --cloud-line: #6f8cc0;
 
-    --surface: rgb(30 15 46 / 0.82);
-    --surface-2: rgb(52 26 74 / 0.85);
-    --field: #170a26;
-    --ink: #fbeefe;
-    --muted: #c7a9d6;
-    --line: rgb(214 140 255 / 0.18);
-    --accent: #ff8a3d;
-    --accent-hover: #ffa365;
-    --accent-ink: #1c0a10;
-    --accent-soft: rgb(255 138 61 / 0.14);
-    --accent-2: #c77dff;
-    --title-gradient: linear-gradient(90deg, #ffb347, #ff5e9c 50%, #c77dff);
-    --danger: #ff6b6b;
-    --danger-soft: rgb(255 107 107 / 0.12);
-    --focus: rgb(255 138 61 / 0.45);
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 12px 32px rgb(0 0 0 / 0.35);
+    --surface: rgb(15 23 44 / 0.84);
+    --surface-2: rgb(27 39 68 / 0.88);
+    --field: #0b1222;
+    --ink: #e6ecf8;
+    --muted: #9cabc8;
+    --line: rgb(160 190 255 / 0.14);
+    --accent: #8fb4f5;
+    --accent-hover: #a9c5f8;
+    --accent-ink: #0b1424;
+    --accent-soft: rgb(143 180 245 / 0.12);
+    --accent-2: #a9b6e6;
+    --title-gradient: linear-gradient(90deg, #9fc0f7, #c3d2f7 55%, #ebc0a8);
+    --danger: #f08a80;
+    --danger-soft: rgb(240 138 128 / 0.12);
+    --focus: rgb(143 180 245 / 0.4);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px rgb(0 0 0 / 0.3);
   }
 }
 
@@ -235,7 +235,7 @@ h2 em,
   transform-origin: bottom;
   -webkit-mask-image: linear-gradient(to top, #000 35%, transparent);
   mask-image: linear-gradient(to top, #000 35%, transparent);
-  animation: grid-roll 6s linear infinite;
+  animation: grid-roll 14s linear infinite;
 }
 
 .backdrop-grid::before {
@@ -796,10 +796,38 @@ textarea:focus {
 /* ───────── Admin ───────── */
 .admin-head {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 16px;
+  gap: 12px 16px;
   padding: 32px 0 20px;
+}
+
+.admin-head h1 {
+  white-space: nowrap;
+}
+
+.share {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.share-text {
+  display: grid;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.share-text code {
+  font-size: 0.85rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tabs {

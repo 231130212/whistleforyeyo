@@ -6,14 +6,24 @@
 
 Nama dan konsepnya terinspirasi dari istilah *whistleblower* yang aku pelajari di kelas manajemen: seseorang membisikkan rahasia kantor ke telinga orang lain.
 
+![Beranda whistleforyeyo (mode gelap)](docs/screenshots/beranda-gelap.png)
+
+| Papan bisikan (mode terang) | Inbox admin | Tampilan HP |
+|---|---|---|
+| ![Papan bisikan](docs/screenshots/papan.png) | ![Inbox admin](docs/screenshots/admin.png) | ![Tampilan HP](docs/screenshots/mobile.png) |
+
+<sub>Screenshot memakai data contoh.</sub>
+
 ## Fitur
 
 - **Bisikan anonim** dengan nama opsional (maks. 1000 karakter)
 - **Selipkan lagu**: cari lagu langsung di aplikasi lewat iTunes Search API, lengkap dengan cover album dan **preview 30 detik**
 - **Inbox admin** khusus pemilik: filter *semua / belum dibaca / di papan*, tandai dibaca, hapus
 - **Balas & publikasikan**: bisikan pilihan tampil di papan publik bersama balasannya
-- **Anti-spam**: rate limit per IP dan honeypot untuk bot
-- Tampilan responsif dengan **mode gelap otomatis**
+- **Notifikasi Telegram**: setiap bisikan baru langsung dikirim ke bot Telegram pribadi
+- **Siap dibagikan**: tombol "Bagikan link" (memakai menu share bawaan di HP) dan preview Open Graph untuk WhatsApp, Instagram, X, dan Telegram
+- **Anti-spam**: rate limit per IP dan global, serta honeypot untuk bot
+- Tema **retro sunset** (gradien senja, matahari bergaris, awan gaya ukiyo-e) dengan **mode gelap otomatis**, responsif di HP
 
 ## Teknologi
 
@@ -50,6 +60,7 @@ Butuh **Node.js 22.13+**.
 ```bash
 npm install          # install semua dependency (root, server, client)
 npm run setup        # buat password admin -> server/.env
+npm run setup:telegram   # (opsional) sambungkan notifikasi Telegram
 npm run dev          # server :3001 + client :5173
 ```
 
@@ -69,7 +80,10 @@ npm start            # server menyajikan API + frontend di :3001
 | `server/.env` | `PORT`, `JWT_SECRET`, `ADMIN_PASSWORD_HASH` | Dibuat otomatis oleh `npm run setup` |
 | `server/.env` | `DB_PATH` (opsional) | Lokasi file database, default `server/data/whistle.db` |
 | `server/.env` | `TRUST_PROXY` (opsional) | Set `1` saat di-hosting di belakang proxy |
+| `server/.env` | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | Dibuat otomatis oleh `npm run setup:telegram` |
+| `server/.env` | `PUBLIC_URL` (opsional) | Alamat situs, supaya notifikasi Telegram berisi link ke inbox |
 | `client/.env` | `VITE_OWNER_NAME` (opsional) | Nama pemilik telinga, default `Yeyo` |
+| `client/.env` | `VITE_PUBLIC_URL` (wajib saat hosting) | Alamat situs, supaya gambar preview link muncul di WhatsApp/Facebook |
 
 ## API
 
