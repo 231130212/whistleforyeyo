@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="16" fill="#d9480f"/>
+  <!-- paruh atas -->
+  <path d="M10 22q16-8 33 4-16 4-33 5z" fill="#fff"/>
+  <!-- paruh bawah -->
+  <path d="M10 36q14-1 28 4-14 7-28 6z" fill="#fff"/>
+  <!-- garis kicau -->
+  <path d="M47 22q5 10 0 20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M53 17q7 15 0 30" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+</svg>

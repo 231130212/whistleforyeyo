@@ -1,0 +1,11 @@
+node_modules/
+client/dist/
+
+# rahasia & data lokal
+.env
+server/data/
+
+# lain-lain
+*.log
+.DS_Store
+.vscode/
