@@ -7,15 +7,13 @@ import { notifyNewWhisper } from '../services/telegram.js';
 
 const router = Router();
 
-const insertMessage = db.prepare(
-  'INSERT INTO messages (name, body, song_json, created_at) VALUES (?, ?, ?, ?)',
-);
-const selectBoard = db.prepare(`
+const INSERT_MESSAGE = 'INSERT INTO messages (name, body, song_json, created_at) VALUES (?, ?, ?, ?)';
+const SELECT_BOARD = `
   SELECT * FROM messages
   WHERE is_public = 1
   ORDER BY COALESCE(replied_at, created_at) DESC
   LIMIT 50
-`);
+`;
 
 const bad = (res, error, status = 400) => res.status(status).json({ error });
 
@@ -48,14 +46,15 @@ router.post('/messages', sendLimiter, globalSendLimiter, async (req, res) => {
     if (!song) return bad(res, 'Lagunya tidak ditemukan.');
   }
 
-  insertMessage.run(sender, text, song ? JSON.stringify(song) : null, new Date().toISOString());
+  await db.run(INSERT_MESSAGE, [sender, text, song ? JSON.stringify(song) : null, new Date().toISOString()]);
   notifyNewWhisper({ name: sender, body: text, song });
   res.status(201).json({ ok: true });
 });
 
 // Papan bisikan publik (yang dipilih admin)
-router.get('/board', (req, res) => {
-  res.json({ messages: selectBoard.all().map(toPublicMessage) });
+router.get('/board', async (req, res) => {
+  const rows = await db.all(SELECT_BOARD);
+  res.json({ messages: rows.map(toPublicMessage) });
 });
 
 // Cari lagu

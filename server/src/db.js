@@ -1,15 +1,24 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { DatabaseSync } from 'node:sqlite';
+import { createClient } from '@libsql/client';
 import { config } from './config.js';
 
-fs.mkdirSync(path.dirname(config.dbPath), { recursive: true });
+// Satu kode untuk dua tempat:
+// - Laptop (default): file SQLite lokal di server/data/whistle.db
+// - Hosting: database Turso di cloud (isi TURSO_DATABASE_URL + TURSO_AUTH_TOKEN)
+const remoteUrl = process.env.TURSO_DATABASE_URL;
 
-export const db = new DatabaseSync(config.dbPath);
+if (!remoteUrl) fs.mkdirSync(path.dirname(config.dbPath), { recursive: true });
 
-db.exec(`
-  PRAGMA journal_mode = WAL;
+const client = createClient(
+  remoteUrl
+    ? { url: remoteUrl, authToken: process.env.TURSO_AUTH_TOKEN }
+    : { url: `file:${config.dbPath}` },
+);
 
+export const dbLocation = remoteUrl ? 'Turso (cloud)' : config.dbPath;
+
+const SCHEMA = `
   CREATE TABLE IF NOT EXISTS messages (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT,
@@ -26,7 +35,7 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_messages_public  ON messages (is_public, replied_at DESC);
 
   -- Sesi login admin. Yang disimpan hanya hash token, bukan token aslinya,
-  -- jadi kalau file database bocor, sesi tetap tidak bisa dipakai.
+  -- jadi kalau database bocor, sesi tetap tidak bisa dipakai.
   CREATE TABLE IF NOT EXISTS sessions (
     token_hash      TEXT PRIMARY KEY,
     pw_fingerprint  TEXT NOT NULL,
@@ -34,12 +43,24 @@ db.exec(`
     expires_at      TEXT NOT NULL,
     user_agent      TEXT
   );
-`);
+`;
+
+export async function initDb() {
+  if (!remoteUrl) await client.execute('PRAGMA journal_mode = WAL');
+  await client.executeMultiple(SCHEMA);
+}
+
+// Helper kecil. Semua query memakai parameter (?) — aman dari SQL injection.
+export const db = {
+  all: async (sql, args = []) => (await client.execute({ sql, args })).rows,
+  get: async (sql, args = []) => (await client.execute({ sql, args })).rows[0],
+  run: (sql, args = []) => client.execute({ sql, args }),
+};
 
 /** Baris database -> objek untuk admin (lengkap). */
 export function toMessage(row) {
   return {
-    id: row.id,
+    id: Number(row.id),
     name: row.name,
     body: row.body,
     song: row.song_json ? JSON.parse(row.song_json) : null,
@@ -47,7 +68,7 @@ export function toMessage(row) {
     readAt: row.read_at,
     reply: row.reply,
     repliedAt: row.replied_at,
-    isPublic: row.is_public === 1,
+    isPublic: Number(row.is_public) === 1,
   };
 }
 

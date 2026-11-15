@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import helmet from 'helmet';
 import { config } from './config.js';
+import { dbLocation, initDb } from './db.js';
 import adminRoutes from './routes/admin.js';
 import authRoutes from './routes/auth.js';
 import publicRoutes from './routes/public.js';
@@ -55,6 +56,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Server lagi bermasalah. Coba lagi nanti ya.' });
 });
 
+try {
+  await initDb();
+} catch (error) {
+  console.error('❌ Gagal terhubung ke database:', error.message);
+  process.exit(1);
+}
+
 app.listen(config.port, (error) => {
   if (error) {
     if (error.code === 'EADDRINUSE') {
@@ -67,6 +75,7 @@ app.listen(config.port, (error) => {
     process.exit(1);
   }
   console.log(`🤫 whistleforyeyo server jalan di http://localhost:${config.port}`);
+  console.log(`🗄️  Database: ${dbLocation}`);
   console.log(
     telegramEnabled
       ? '📨 Notifikasi Telegram: aktif'

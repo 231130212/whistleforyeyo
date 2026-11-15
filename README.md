@@ -30,7 +30,8 @@ Nama dan konsepnya terinspirasi dari istilah *whistleblower* yang aku pelajari d
 | Bagian   | Stack |
 |----------|-------|
 | Frontend | React 19, React Router, Vite, CSS murni (design tokens + dark mode) |
-| Backend  | Node.js, Express 5, SQLite bawaan Node (`node:sqlite`) |
+| Backend  | Node.js, Express 5, SQLite via libSQL (file lokal saat development, Turso saat hosting) |
+| Hosting  | Render (aplikasi) + Turso (database), keduanya paket gratis |
 | Keamanan | bcrypt, sesi server-side di SQLite, cookie `httpOnly` + `SameSite=Strict`, cek Origin, Helmet (CSP), express-rate-limit |
 | Data lagu | iTunes Search API |
 
@@ -38,7 +39,7 @@ Nama dan konsepnya terinspirasi dari istilah *whistleblower* yang aku pelajari d
 
 - **Data lagu tidak dipercaya dari browser.** Klien hanya mengirim `songId`, lalu server mengambil ulang detailnya dari iTunes. Jadi isi kartu lagu tidak bisa dipalsukan.
 - **Single-owner auth.** Hanya ada satu akun admin. Password tidak disimpan di kode, melainkan hash bcrypt di `.env` yang dibuat lewat `npm run setup` (input tersembunyi, minimal 12 karakter).
-- **Tanpa native dependency.** Database memakai SQLite bawaan Node, jadi tidak perlu compile apa pun di Windows.
+- **Satu kode untuk lokal dan cloud.** Lapisan database memakai `@libsql/client`. Tanpa konfigurasi, data disimpan di file SQLite lokal. Kalau `TURSO_DATABASE_URL` diisi, query yang sama langsung berjalan di database Turso.
 
 ## Keamanan
 
@@ -65,6 +66,14 @@ npm run dev          # server :3001 + client :5173
 ```
 
 Buka http://localhost:5173. Inbox admin ada di http://localhost:5173/admin.
+
+### Deploy (Render + Turso, gratis)
+
+1. Buat database di [Turso](https://turso.tech), lalu salin **Database URL** dan buat **auth token**.
+2. Di [Render](https://render.com), pilih **New → Blueprint** dan hubungkan repo ini. Render membaca [`render.yaml`](render.yaml).
+3. Isi nilai rahasianya di dashboard Render: `ADMIN_PASSWORD_HASH` dan token Telegram (disalin dari `server/.env`), kredensial Turso, serta `PUBLIC_URL` / `VITE_PUBLIC_URL`.
+
+Catatan: server gratis Render tidur setelah 15 menit tanpa pengunjung, jadi akses pertama setelahnya butuh sekitar 1 menit.
 
 ### Mode production
 

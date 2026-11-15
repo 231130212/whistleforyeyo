@@ -8,7 +8,7 @@
   --sun-opacity: 0.85;
   --grid-line: rgb(47 99 176 / 0.14);
   --cloud-fill: #ffffff;
-  --cloud-line: #a8bcdc;
+  --cloud-opacity: 0.85;
 
   --surface: rgb(255 255 255 / 0.84);
   --surface-2: rgb(238 243 250 / 0.92);
@@ -45,8 +45,8 @@
     --sun-bottom: #9fb4da;
     --sun-opacity: 0.55;
     --grid-line: rgb(143 180 255 / 0.16);
-    --cloud-fill: #182747;
-    --cloud-line: #6f8cc0;
+    --cloud-fill: #7896cd;
+    --cloud-opacity: 0.18;
 
     --surface: rgb(15 23 44 / 0.84);
     --surface-2: rgb(27 39 68 / 0.88);
@@ -164,7 +164,7 @@ h2 em,
   );
 }
 
-/* Awan gaya ukiyo-e, mengayun pelan ke kanan-kiri */
+/* Awan kasumi, mengayun pelan ke kanan-kiri */
 .cloud {
   position: absolute;
   top: var(--top);
@@ -192,18 +192,9 @@ h2 em,
   transform: scaleX(-1);
 }
 
-.cloud-body {
+.cloud svg {
   fill: var(--cloud-fill);
-  stroke: var(--cloud-line);
-  stroke-width: 2.2;
-  stroke-linejoin: round;
-}
-
-.cloud-line {
-  fill: none;
-  stroke: var(--cloud-line);
-  stroke-width: 2.2;
-  stroke-linecap: round;
+  opacity: var(--cloud-opacity);
 }
 
 @keyframes cloud-sway {

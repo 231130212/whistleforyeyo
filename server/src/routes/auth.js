@@ -21,24 +21,24 @@ router.post('/login', loginLimiter, async (req, res) => {
     return res.status(401).json({ error: 'Password salah.' });
   }
   console.info(`[keamanan] login berhasil ${new Date().toISOString()} ip=${req.ip}`);
-  startSession(req, res);
+  await startSession(req, res);
   res.json({ ok: true });
 });
 
-router.post('/logout', (req, res) => {
-  endSession(req, res);
+router.post('/logout', async (req, res) => {
+  await endSession(req, res);
   res.json({ ok: true });
 });
 
 // Keluarkan semua perangkat (misalnya kalau curiga ada yang login selain kamu).
-router.post('/logout-all', requireAdmin, (req, res) => {
-  endAllSessions(req, res);
+router.post('/logout-all', requireAdmin, async (req, res) => {
+  await endAllSessions(req, res);
   console.info(`[keamanan] semua sesi dicabut ${new Date().toISOString()} ip=${req.ip}`);
   res.json({ ok: true });
 });
 
-router.get('/me', (req, res) => {
-  res.json({ admin: isAdmin(req) });
+router.get('/me', async (req, res) => {
+  res.json({ admin: await isAdmin(req) });
 });
 
 export default router;
