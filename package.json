@@ -2,6 +2,7 @@
   "name": "whistleforyeyo",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Kirim bisikan anonim (plus lagu, kalau mau) ke telinga Yeyo.",
   "workspaces": [
     "server",

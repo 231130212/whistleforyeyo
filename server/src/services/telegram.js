@@ -31,15 +31,22 @@ export async function sendTelegram(text) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: CHAT_ID, text, disable_web_page_preview: true }),
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(5000),
   });
   if (!res.ok) throw new Error(`Telegram API ${res.status}`);
 }
 
-/** Kirim notifikasi tanpa menunggu & tanpa pernah menggagalkan pengiriman bisikan. */
-export function notifyNewWhisper(whisper) {
+/**
+ * Kirim notifikasi. Tidak pernah melempar error, jadi bisikan tetap tersimpan
+ * walau Telegram gagal. Sengaja ditunggu (await) oleh pemanggil: di serverless,
+ * fungsi bisa dibekukan begitu respons terkirim, sehingga notifikasi yang tidak
+ * ditunggu bisa hilang.
+ */
+export async function notifyNewWhisper(whisper) {
   if (!telegramEnabled) return;
-  sendTelegram(formatWhisper(whisper)).catch((err) => {
+  try {
+    await sendTelegram(formatWhisper(whisper));
+  } catch (err) {
     console.warn(`[telegram] notifikasi gagal: ${err.message}`);
-  });
+  }
 }

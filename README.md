@@ -31,7 +31,7 @@ Nama dan konsepnya terinspirasi dari istilah *whistleblower* yang aku pelajari d
 |----------|-------|
 | Frontend | React 19, React Router, Vite, CSS murni (design tokens + dark mode) |
 | Backend  | Node.js, Express 5, SQLite via libSQL (file lokal saat development, Turso saat hosting) |
-| Hosting  | Render (aplikasi) + Turso (database), keduanya paket gratis |
+| Hosting  | Vercel (frontend + API serverless) + Turso (database), keduanya paket gratis |
 | Keamanan | bcrypt, sesi server-side di SQLite, cookie `httpOnly` + `SameSite=Strict`, cek Origin, Helmet (CSP), express-rate-limit |
 | Data lagu | iTunes Search API |
 
@@ -67,13 +67,16 @@ npm run dev          # server :3001 + client :5173
 
 Buka http://localhost:5173. Inbox admin ada di http://localhost:5173/admin.
 
-### Deploy (Render + Turso, gratis)
+### Deploy (Vercel + Turso, gratis)
 
 1. Buat database di [Turso](https://turso.tech), lalu salin **Database URL** dan buat **auth token**.
-2. Di [Render](https://render.com), pilih **New → Blueprint** dan hubungkan repo ini. Render membaca [`render.yaml`](render.yaml).
-3. Isi nilai rahasianya di dashboard Render: `ADMIN_PASSWORD_HASH` dan token Telegram (disalin dari `server/.env`), kredensial Turso, serta `PUBLIC_URL` / `VITE_PUBLIC_URL`.
+2. Di [Vercel](https://vercel.com), import repo ini. Konfigurasinya sudah ada di [`vercel.json`](vercel.json): frontend disajikan sebagai file statis, dan `/api/*` dijalankan sebagai fungsi serverless lewat [`api/index.js`](api/index.js).
+3. Isi Environment Variables di Vercel: `ADMIN_PASSWORD_HASH` dan token Telegram (disalin dari `server/.env`), `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `TRUST_PROXY=1`, serta `PUBLIC_URL` / `VITE_PUBLIC_URL`.
 
-Catatan: server gratis Render tidur setelah 15 menit tanpa pengunjung, jadi akses pertama setelahnya butuh sekitar 1 menit.
+Penyesuaian untuk serverless:
+- **Rate limit disimpan di database**, bukan di memori. Dengan begitu, batas percobaan login tetap berlaku walaupun request ditangani instance yang berbeda.
+- **Notifikasi Telegram ditunggu sampai terkirim** sebelum respons dikembalikan, supaya tidak hilang saat fungsinya dibekukan.
+- **Header keamanan** (CSP, anti-clickjacking, HSTS) untuk halaman statis diatur di `vercel.json`.
 
 ### Mode production
 

@@ -43,6 +43,13 @@ const SCHEMA = `
     expires_at      TEXT NOT NULL,
     user_agent      TEXT
   );
+
+  -- Hitungan rate limit (anti brute force & spam), dibagi antar instance server.
+  CREATE TABLE IF NOT EXISTS rate_limits (
+    key       TEXT PRIMARY KEY,
+    hits      INTEGER NOT NULL,
+    reset_at  INTEGER NOT NULL
+  );
 `;
 
 export async function initDb() {

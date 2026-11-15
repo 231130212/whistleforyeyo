@@ -47,7 +47,7 @@ router.post('/messages', sendLimiter, globalSendLimiter, async (req, res) => {
   }
 
   await db.run(INSERT_MESSAGE, [sender, text, song ? JSON.stringify(song) : null, new Date().toISOString()]);
-  notifyNewWhisper({ name: sender, body: text, song });
+  await notifyNewWhisper({ name: sender, body: text, song });
   res.status(201).json({ ok: true });
 });
 
